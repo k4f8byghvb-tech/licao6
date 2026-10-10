@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Lição 6 em 3 etapas — O papel do talento musical</title>
+<title>Lição 6 — O papel do talento musical</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
@@ -35,9 +35,7 @@
 
   .palco{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:1000px;width:100%;margin:0 auto;min-height:0;overflow-y:auto}
 
-  .quadro,.resultado,.centro{
-    background:var(--paper);border:4px solid var(--ink);border-radius:26px;box-shadow:8px 8px 0 var(--ink);
-  }
+  .quadro,.resultado,.centro{background:var(--paper);border:4px solid var(--ink);border-radius:26px;box-shadow:8px 8px 0 var(--ink)}
   .quadro{padding:24px 24px;text-align:center}
   .quadro .pergunta{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.25rem,4vw,2.1rem);line-height:1.2}
 
@@ -64,8 +62,11 @@
 
   .centro{padding:30px 24px;text-align:center}
   .centro h2{font-size:clamp(1.6rem,5.4vw,2.6rem);margin-bottom:10px}
+  .faixa{display:inline-block;font-family:'Fredoka',sans-serif;font-weight:700;color:#fff;
+    border:4px solid var(--ink);border-radius:99px;padding:7px 20px;margin-bottom:14px;transform:rotate(-1.5deg)}
   .pontuacao{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(3rem,13vw,5.5rem);line-height:.9}
   .medalha{display:inline-block;background:var(--lilac);border:4px solid var(--ink);border-radius:99px;padding:8px 22px;font-weight:900;margin:10px 0 14px;transform:rotate(-1.5deg)}
+  .proxima{background:#FFEFD6;border:4px dashed var(--ink);border-radius:18px;padding:14px 16px;margin-top:16px;font-weight:700}
 
   input,textarea{
     font-family:'Nunito',sans-serif;font-weight:700;font-size:1.05rem;width:100%;
@@ -74,30 +75,15 @@
   textarea{min-height:140px;font-size:.95rem;font-family:ui-monospace,Menlo,Consolas,monospace}
 
   .botoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-  .nav{
-    font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;background:var(--sun);
-    border:4px solid var(--ink);border-radius:99px;padding:13px 26px;cursor:pointer;box-shadow:5px 5px 0 var(--ink);
-  }
+  .nav{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;background:var(--sun);
+    border:4px solid var(--ink);border-radius:99px;padding:13px 26px;cursor:pointer;box-shadow:5px 5px 0 var(--ink)}
   .nav.claro{background:var(--paper)}
   .nav:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
   .link{background:none;border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;
     text-decoration:underline;cursor:pointer;color:var(--ink);opacity:.6;padding:8px;margin-top:6px}
 
-  .etapas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}
-  .etapa{
-    border:4px solid var(--ink);border-radius:18px;padding:14px 8px;background:#fff;cursor:pointer;
-    font-family:'Fredoka',sans-serif;font-weight:600;box-shadow:5px 5px 0 var(--ink);
-  }
-  .etapa b{display:block;font-size:1.7rem;line-height:1.1}
-  .etapa small{display:block;font-family:'Nunito',sans-serif;font-weight:700;font-size:.72rem;opacity:.7;margin-top:3px}
-  .etapa.feita{background:var(--verde);color:#fff}
-  .etapa:active{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
-
-  .codigo{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:1.15rem;
-    background:var(--ink);color:var(--paper);border-radius:14px;padding:13px 16px;margin:12px 0 4px;
-    word-break:break-all;user-select:all;
-  }
+  .codigo{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:1.15rem;
+    background:var(--ink);color:var(--paper);border-radius:14px;padding:13px 16px;margin:12px 0 4px;word-break:break-all;user-select:all}
 
   table{width:100%;border-collapse:collapse;margin-top:12px;font-weight:700}
   th,td{text-align:left;padding:9px 6px;border-bottom:3px solid rgba(43,23,54,.15);font-size:.95rem}
@@ -125,7 +111,6 @@
 <main class="palco" id="palco"></main>
 
 <script>
-/* ---------------- conteúdo: 3 etapas x 4 perguntas ---------------- */
 const ETAPAS = [
  {n:1, nome:"Adorar x louvar", cor:"var(--vermelho)", perguntas:[
   {q:"Qual é a diferença entre adorar e louvar a Deus?",
@@ -183,9 +168,8 @@ const FORMAS = [
   '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42"/></svg>',
   '<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="8"/></svg>'
 ];
-const MAX = 1000, CHAVE = "licao6_progresso_v1";
+const MAX = 1000, CHAVE = "licao6_progresso_v2";
 
-/* ---------------- memória do telemóvel ---------------- */
 function ler(){
   try{ return JSON.parse(localStorage.getItem(CHAVE)) || {nome:"", etapas:{}}; }
   catch(e){ return {nome:"", etapas:{}}; }
@@ -193,7 +177,6 @@ function ler(){
 function gravar(p){ try{ localStorage.setItem(CHAVE, JSON.stringify(p)); }catch(e){} }
 let prog = ler();
 
-/* ---------------- estado da partida ---------------- */
 let etapa = null, idx = 0, pontosEtapa = 0, acertosEtapa = 0, serie = 0, relogio = null, restam = 0;
 
 const palco = document.getElementById("palco");
@@ -210,53 +193,55 @@ const feitas = () => Object.keys(prog.etapas).length;
 const somaAcertos = () => Object.values(prog.etapas).reduce((s,e) => s + e.a, 0);
 const somaPontos = () => Object.values(prog.etapas).reduce((s,e) => s + e.p, 0);
 
-function etapaDoEndereco(){
+function numeroDoEndereco(){
   const h = (location.hash || "").replace(/[^0-9]/g, "");
   const n = parseInt(h, 10);
   return (n >= 1 && n <= 3) ? n : null;
 }
 
-/* ---------------- ecrãs ---------------- */
-function inicio(){
-  pararRelogio(); mostrarTopo(false);
-  const alvo = etapaDoEndereco();
-  const temNome = !!prog.nome;
-
+/* ---------- pedir o nome (só na primeira etapa que o aluno abre) ---------- */
+function pedirNome(n){
+  mostrarTopo(false);
+  const et = ETAPAS[n-1];
   palco.innerHTML = `<div class="centro">
-    <h2>Lição 6 · O papel do talento musical</h2>
-    <p>Três etapas, quatro perguntas cada. O teu telemóvel guarda a pontuação e no fim soma tudo.</p>
-    ${temNome ? `<p>Estás a jogar como <b>${prog.nome}</b>. <button class="link" id="trocar">não sou eu</button></p>`
-              : `<input type="text" id="nome" placeholder="Escreve o teu nome" maxlength="24" autocomplete="off">`}
-    <div class="etapas">
-      ${ETAPAS.map(et => {
-        const r = prog.etapas[et.n];
-        return `<div class="etapa ${r ? "feita" : ""}" data-e="${et.n}">
-          <b>${et.n}</b><small>${r ? r.a + "/4 certas" : et.nome}</small></div>`;
-      }).join("")}
-    </div>
-    <p style="opacity:.65;font-size:.9rem">${alvo ? "Etapa " + alvo + " pronta a começar." : "Lê o QR da etapa ou toca no número."}</p>
-    ${feitas() === 3 ? `<button class="nav" id="verfinal">Ver o meu resultado final</button>` : ""}
-    <div><button class="link" id="prof">Sou o professor</button></div>
+    <div class="faixa" style="background:${et.cor}">Etapa ${n} · ${et.nome}</div>
+    <h2>Antes de começar</h2>
+    <p>Escreve o teu nome. Serve para somares as três etapas e para a professora saber de quem é o resultado.</p>
+    <input type="text" id="nome" placeholder="O teu nome" maxlength="24" autocomplete="off">
+    <div class="botoes"><button class="nav" id="ir">Começar a etapa ${n}</button></div>
   </div>`;
-
   const campo = document.getElementById("nome");
-  const pegarNome = () => {
-    if (campo){ prog.nome = campo.value.trim() || "Sem nome"; gravar(prog); }
-    return !!prog.nome;
-  };
-  palco.querySelectorAll(".etapa").forEach(d => d.onclick = () => {
-    const n = Number(d.dataset.e);
-    if (!pegarNome() && !prog.nome){ campo && campo.focus(); return; }
-    if (prog.etapas[n] && !confirm("Já fizeste a etapa " + n + ". Queres repetir? A pontuação anterior é substituída.")) return;
+  campo.focus();
+  const avancar = () => {
+    prog.nome = campo.value.trim() || "Sem nome";
+    gravar(prog);
     comecar(n);
-  });
-  const tr = document.getElementById("trocar");
-  if (tr) tr.onclick = () => { prog = {nome:"", etapas:{}}; gravar(prog); inicio(); };
-  const vf = document.getElementById("verfinal");
-  if (vf) vf.onclick = final;
-  document.getElementById("prof").onclick = professor;
+  };
+  document.getElementById("ir").onclick = avancar;
+  campo.onkeydown = e => { if (e.key === "Enter") avancar(); };
+}
 
-  if (alvo && prog.nome && !prog.etapas[alvo]) comecar(alvo);
+function abrirEtapa(n){
+  if (prog.etapas[n]){ repetir(n); return; }
+  if (!prog.nome){ pedirNome(n); return; }
+  comecar(n);
+}
+
+function repetir(n){
+  mostrarTopo(false);
+  const r = prog.etapas[n], et = ETAPAS[n-1];
+  palco.innerHTML = `<div class="centro">
+    <div class="faixa" style="background:${et.cor}">Etapa ${n} · ${et.nome}</div>
+    <h2>Já fizeste esta etapa</h2>
+    <p>Tiveste <b>${r.a}/4</b> certas, ${r.p} pontos.</p>
+    <div class="botoes">
+      <button class="nav claro" id="outra">Fazer de novo</button>
+      ${feitas() === 3 ? `<button class="nav" id="fim">Ver o meu resultado final</button>` : ""}
+    </div>
+  </div>`;
+  document.getElementById("outra").onclick = () => comecar(n);
+  const f = document.getElementById("fim");
+  if (f) f.onclick = final;
 }
 
 function comecar(n){
@@ -324,17 +309,18 @@ function fimEtapa(){
   mostrarTopo(false);
   prog.etapas[etapa.n] = {a:acertosEtapa, p:pontosEtapa};
   gravar(prog);
-  const quantas = feitas();
+  const quantas = feitas(), n = etapa.n;
   palco.innerHTML = `<div class="centro">
-    <h2>Etapa ${etapa.n} concluída</h2>
+    <div class="faixa" style="background:${etapa.cor}">Etapa ${n} terminada</div>
     <div class="pontuacao">${acertosEtapa}<span style="font-size:.35em">/4</span></div>
     <div class="medalha">${pontosEtapa} pontos nesta etapa</div>
-    <p>Somando tudo até agora: <b>${somaAcertos()} de ${quantas*4}</b> certas · ${somaPontos()} pontos.</p>
+    <p>Somando o que já fizeste: <b>${somaAcertos()} de ${quantas*4}</b> certas · ${somaPontos()} pontos.</p>
     ${quantas === 3
-      ? `<p>Fizeste as três etapas!</p><div class="botoes"><button class="nav" id="ir">Ver o resultado final</button></div>`
-      : `<p>Lê agora o QR da próxima etapa.</p><div class="botoes"><button class="nav claro" id="ir">Voltar ao início</button></div>`}
+      ? `<div class="botoes"><button class="nav" id="ir">Ver o meu resultado final</button></div>`
+      : `<div class="proxima">Agora espera pela próxima parte da aula e lê o QR da etapa seguinte.</div>`}
   </div>`;
-  document.getElementById("ir").onclick = feitas() === 3 ? final : inicio;
+  const b = document.getElementById("ir");
+  if (b) b.onclick = final;
 }
 
 function codigo(){
@@ -343,7 +329,14 @@ function codigo(){
 }
 
 function final(){
-  mostrarTopo(false);
+  pararRelogio(); mostrarTopo(false);
+  if (!feitas()){
+    palco.innerHTML = `<div class="centro">
+      <h2>Lição 6 · O papel do talento musical</h2>
+      <p>Ainda não fizeste nenhuma etapa. Lê o QR code que a professora mostrar no ecrã.</p>
+    </div>`;
+    return;
+  }
   const tot = somaAcertos(), pts = somaPontos();
   let medalha = "Bora reler a lição";
   if (tot === 12) medalha = "Gabaritou!";
@@ -357,14 +350,13 @@ function final(){
     <h2>${prog.nome}</h2>
     <div class="pontuacao">${tot}<span style="font-size:.35em">/12</span></div>
     <div class="medalha">${medalha}</div>
-    <p>${pts} pontos no total · etapa 1: ${(prog.etapas[1]||{a:0}).a}/4 · etapa 2: ${(prog.etapas[2]||{a:0}).a}/4 · etapa 3: ${(prog.etapas[3]||{a:0}).a}/4</p>
+    <p>${pts} pontos · etapa 1: ${(prog.etapas[1]||{a:0}).a}/4 · etapa 2: ${(prog.etapas[2]||{a:0}).a}/4 · etapa 3: ${(prog.etapas[3]||{a:0}).a}/4</p>
     <p style="margin-top:14px">Envia este código à professora:</p>
     <div class="codigo">${cod}</div>
     <div class="botoes">
       <button class="nav" id="partilhar">Enviar à professora</button>
       <button class="nav claro" id="copiar">Copiar código</button>
     </div>
-    <div><button class="link" id="recomecar">Apagar e começar do zero</button></div>
   </div>`;
 
   document.getElementById("partilhar").onclick = async () => {
@@ -376,23 +368,25 @@ function final(){
     try{ await navigator.clipboard.writeText(cod); alert("Código copiado."); }
     catch(e){ prompt("Copia o código:", cod); }
   };
-  document.getElementById("recomecar").onclick = () => {
-    if (confirm("Apagar a tua pontuação das três etapas?")){ prog = {nome:"", etapas:{}}; gravar(prog); inicio(); }
-  };
 }
 
-/* ---------------- painel do professor ---------------- */
 function professor(){
   pararRelogio(); mostrarTopo(false);
   palco.innerHTML = `<div class="centro" style="text-align:left">
-    <h2 style="text-align:center">Painel do professor</h2>
-    <p style="text-align:center">Cola aqui os códigos que os alunos enviaram (um por linha) e a soma aparece ordenada.</p>
+    <h2 style="text-align:center">Resultado geral da turma</h2>
+    <p style="text-align:center">Cola os códigos que os alunos enviaram, um por linha.</p>
     <textarea id="colar" placeholder="L6|Maria|4-3-2|6120&#10;L6|João|3-4-4|7340"></textarea>
-    <div class="botoes"><button class="nav" id="somar">Somar</button>
-      <button class="nav claro" id="voltar">Voltar</button></div>
+    <div class="botoes">
+      <button class="nav" id="somar">Somar</button>
+      <button class="nav claro" id="voltar">Voltar</button>
+      <button class="nav claro" id="limpar">Apagar este telemóvel</button>
+    </div>
     <div id="tabela"></div>
   </div>`;
-  document.getElementById("voltar").onclick = inicio;
+  document.getElementById("voltar").onclick = final;
+  document.getElementById("limpar").onclick = () => {
+    if (confirm("Apagar a pontuação guardada neste telemóvel?")){ prog = {nome:"", etapas:{}}; gravar(prog); final(); }
+  };
   document.getElementById("somar").onclick = () => {
     const linhas = document.getElementById("colar").value.split(/\n+/);
     const alunos = [];
@@ -413,7 +407,13 @@ function professor(){
   };
 }
 
-window.addEventListener("hashchange", () => { pararRelogio(); inicio(); });
+function arrancar(){
+  if (/prof/i.test(location.hash)){ professor(); return; }
+  const n = numeroDoEndereco();
+  if (n) abrirEtapa(n); else final();
+}
+
+window.addEventListener("hashchange", () => { pararRelogio(); arrancar(); });
 document.addEventListener("keydown", e => {
   if (["1","2","3","4"].includes(e.key)){
     const b = palco.querySelector(`.op[data-k="${Number(e.key)-1}"]:not(:disabled)`);
@@ -421,7 +421,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
-inicio();
+arrancar();
 </script>
 </body>
 </html>
