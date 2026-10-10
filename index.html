@@ -206,7 +206,7 @@ function pedirNome(n){
   palco.innerHTML = `<div class="centro">
     <div class="faixa" style="background:${et.cor}">Etapa ${n} · ${et.nome}</div>
     <h2>Antes de começar</h2>
-    <p>Escreve o teu nome. Serve para somares as três etapas e para a professora saber de quem é o resultado.</p>
+    <p>Escreve o teu nome. Serve para somares as três etapas e para o professor saber de quem é o resultado.</p>
     <input type="text" id="nome" placeholder="O teu nome" maxlength="24" autocomplete="off">
     <div class="botoes"><button class="nav" id="ir">Começar a etapa ${n}</button></div>
   </div>`;
@@ -333,7 +333,7 @@ function final(){
   if (!feitas()){
     palco.innerHTML = `<div class="centro">
       <h2>Lição 6 · O papel do talento musical</h2>
-      <p>Ainda não fizeste nenhuma etapa. Lê o QR code que a professora mostrar no ecrã.</p>
+      <p>Ainda não fizeste nenhuma etapa. Lê o QR code que o professor mostrar no ecrã.</p>
     </div>`;
     return;
   }
@@ -351,17 +351,17 @@ function final(){
     <div class="pontuacao">${tot}<span style="font-size:.35em">/12</span></div>
     <div class="medalha">${medalha}</div>
     <p>${pts} pontos · etapa 1: ${(prog.etapas[1]||{a:0}).a}/4 · etapa 2: ${(prog.etapas[2]||{a:0}).a}/4 · etapa 3: ${(prog.etapas[3]||{a:0}).a}/4</p>
-    <p style="margin-top:14px">Envia este código à professora:</p>
+    <p style="margin-top:14px">Envia este código ao professor:</p>
     <div class="codigo">${cod}</div>
     <div class="botoes">
-      <button class="nav" id="partilhar">Enviar à professora</button>
+      <button class="nav" id="partilhar">Enviar ao professor</button>
       <button class="nav claro" id="copiar">Copiar código</button>
     </div>
   </div>`;
 
   document.getElementById("partilhar").onclick = async () => {
     if (navigator.share){ try{ await navigator.share({text:msg}); return; }catch(e){} }
-    try{ await navigator.clipboard.writeText(msg); alert("Copiado! Cola numa mensagem para a professora."); }
+    try{ await navigator.clipboard.writeText(msg); alert("Copiado! Cola numa mensagem para o professor."); }
     catch(e){ prompt("Copia e envia:", msg); }
   };
   document.getElementById("copiar").onclick = async () => {
