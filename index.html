@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lição 6 em 3 etapas — O papel do talento musical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B1736;--canvas:#552E63;--paper:#FFF9F0;
+    --vermelho:#E2444A;--azul:#2272C4;--amarelo:#E8A72B;--verde:#28944F;
+    --sun:#FFD23F;--lilac:#C9A6FF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:var(--canvas);
+    background-image:radial-gradient(rgba(255,255,255,.10) 1.5px,transparent 1.6px);
+    background-size:22px 22px;
+    font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
+    display:flex;flex-direction:column;gap:12px;
+    padding:max(12px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));
+  }
+  h1,h2{font-family:'Fredoka',sans-serif;font-weight:700;line-height:1.08}
+
+  .topo{display:flex;align-items:center;gap:10px;max-width:1000px;width:100%;margin:0 auto;flex-shrink:0}
+  .chip{font-family:'Fredoka',sans-serif;font-weight:600;font-size:.92rem;
+    background:var(--paper);border:4px solid var(--ink);border-radius:99px;padding:7px 15px;white-space:nowrap}
+  .cronometro{flex:1;height:22px;border:4px solid var(--ink);border-radius:99px;background:var(--paper);overflow:hidden;position:relative}
+  .cronometro i{display:block;height:100%;background:var(--verde);width:100%}
+  .cronometro.aperto i{background:var(--vermelho)}
+  .cronometro span{position:absolute;inset:0;display:grid;place-items:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:.85rem}
+
+  .palco{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:1000px;width:100%;margin:0 auto;min-height:0;overflow-y:auto}
+
+  .quadro,.resultado,.centro{
+    background:var(--paper);border:4px solid var(--ink);border-radius:26px;box-shadow:8px 8px 0 var(--ink);
+  }
+  .quadro{padding:24px 24px;text-align:center}
+  .quadro .pergunta{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.25rem,4vw,2.1rem);line-height:1.2}
+
+  .grelha{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .op{
+    display:flex;align-items:center;gap:13px;text-align:left;
+    font-family:'Nunito',sans-serif;font-weight:900;color:#fff;font-size:clamp(1rem,2.3vw,1.25rem);
+    border:4px solid var(--ink);border-radius:18px;padding:17px 18px;cursor:pointer;
+    box-shadow:6px 6px 0 var(--ink);min-height:88px;transition:transform .1s,box-shadow .1s,opacity .15s;
+  }
+  .op:active:not(:disabled){transform:translate(3px,3px);box-shadow:3px 3px 0 var(--ink)}
+  .op:disabled{cursor:default}
+  .op .forma{flex:none;width:28px;height:28px}
+  .op .forma svg{width:100%;height:100%;fill:#fff;stroke:var(--ink);stroke-width:14}
+  .c0{background:var(--vermelho)} .c1{background:var(--azul)} .c2{background:var(--amarelo)} .c3{background:var(--verde)}
+  .op.apagada{opacity:.25}
+  .op.vencedora{outline:6px solid var(--sun);outline-offset:-14px}
+
+  .resultado{padding:20px 22px;text-align:center}
+  .veredito{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.4rem,4.6vw,2.2rem);margin-bottom:4px}
+  .veredito.ok{color:var(--verde)} .veredito.falhou{color:var(--vermelho)}
+  .resultado p,.centro p{font-weight:700;line-height:1.5;max-width:58ch;margin:0 auto 8px;font-size:clamp(.96rem,2.1vw,1.08rem)}
+  .ganhou{display:inline-block;background:var(--sun);border:4px solid var(--ink);border-radius:99px;padding:6px 16px;font-family:'Fredoka',sans-serif;font-weight:700;margin:8px 0 4px}
+
+  .centro{padding:30px 24px;text-align:center}
+  .centro h2{font-size:clamp(1.6rem,5.4vw,2.6rem);margin-bottom:10px}
+  .pontuacao{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(3rem,13vw,5.5rem);line-height:.9}
+  .medalha{display:inline-block;background:var(--lilac);border:4px solid var(--ink);border-radius:99px;padding:8px 22px;font-weight:900;margin:10px 0 14px;transform:rotate(-1.5deg)}
+
+  input,textarea{
+    font-family:'Nunito',sans-serif;font-weight:700;font-size:1.05rem;width:100%;
+    padding:13px 15px;border:4px solid var(--ink);border-radius:16px;background:#fff;color:var(--ink);margin:8px 0 12px;
+  }
+  textarea{min-height:140px;font-size:.95rem;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+  .botoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+  .nav{
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;background:var(--sun);
+    border:4px solid var(--ink);border-radius:99px;padding:13px 26px;cursor:pointer;box-shadow:5px 5px 0 var(--ink);
+  }
+  .nav.claro{background:var(--paper)}
+  .nav:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .link{background:none;border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;
+    text-decoration:underline;cursor:pointer;color:var(--ink);opacity:.6;padding:8px;margin-top:6px}
+
+  .etapas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}
+  .etapa{
+    border:4px solid var(--ink);border-radius:18px;padding:14px 8px;background:#fff;cursor:pointer;
+    font-family:'Fredoka',sans-serif;font-weight:600;box-shadow:5px 5px 0 var(--ink);
+  }
+  .etapa b{display:block;font-size:1.7rem;line-height:1.1}
+  .etapa small{display:block;font-family:'Nunito',sans-serif;font-weight:700;font-size:.72rem;opacity:.7;margin-top:3px}
+  .etapa.feita{background:var(--verde);color:#fff}
+  .etapa:active{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+
+  .codigo{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:1.15rem;
+    background:var(--ink);color:var(--paper);border-radius:14px;padding:13px 16px;margin:12px 0 4px;
+    word-break:break-all;user-select:all;
+  }
+
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-weight:700}
+  th,td{text-align:left;padding:9px 6px;border-bottom:3px solid rgba(43,23,54,.15);font-size:.95rem}
+  th{font-family:'Fredoka',sans-serif;font-weight:600}
+  td.n,th.n{text-align:right;font-family:'Fredoka',sans-serif}
+  .media{background:var(--lilac);border:4px solid var(--ink);border-radius:16px;padding:12px 14px;font-weight:900;margin-top:14px}
+
+  :focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:620px){
+    .grelha{grid-template-columns:1fr}
+    .op{min-height:0;padding:14px 15px}
+    .quadro{padding:18px 16px;border-radius:22px;box-shadow:6px 6px 0 var(--ink)}
+  }
+</style>
+</head>
+<body>
+
+<div class="topo" id="topo">
+  <div class="chip" id="chipEtapa">—</div>
+  <div class="cronometro" id="cronometro"><i id="barra"></i><span id="segundos"></span></div>
+  <div class="chip" id="chipPontos">0 pts</div>
+</div>
+
+<main class="palco" id="palco"></main>
+
+<script>
+/* ---------------- conteúdo: 3 etapas x 4 perguntas ---------------- */
+const ETAPAS = [
+ {n:1, nome:"Adorar x louvar", cor:"var(--vermelho)", perguntas:[
+  {q:"Qual é a diferença entre adorar e louvar a Deus?",
+   o:["São a mesma coisa, só muda a palavra",
+      "Adorar é honrar e servir a Deus; louvar é elogiar e aplaudir",
+      "Adorar é cantar; louvar é orar",
+      "Louvar só vale com instrumentos"], c:1, t:30,
+   e:"Adorar é honrar, servir a Deus e reconhecer a sua soberania. Louvar significa elogiar, falar bem, aplaudir."},
+  {q:"Quem foi o primeiro a oferecer sacrifício depois do Dilúvio?",
+   o:["Noé","Abraão","Moisés","Davi"], c:0, t:20,
+   e:"Noé (Génesis 8.20). A adoração acompanha a humanidade desde a criação."},
+  {q:"Durante o Êxodo, o povo hebreu adorava dentro de um templo?",
+   o:["Sim, no Templo de Jerusalém","Não, construíam altares e queimavam ofertas"], c:1, t:20,
+   e:"Não existia templo. Construíam altares e as ofertas queimadas eram oferecidas ali (Êxodo 29.18)."},
+  {q:"Depois do surgimento da Igreja, como passou a ser a adoração?",
+   o:["Oração, louvor e pregação da Palavra","Apenas sacrifícios de animais",
+      "Apenas cânticos com instrumentos","Somente no Templo de Jerusalém"], c:0, t:20,
+   e:"Oração, louvor e pregação da Palavra — o modelo que seguimos até hoje (Atos 2.46,47)."}
+ ]},
+ {n:2, nome:"O preparo na adoração", cor:"var(--azul)", perguntas:[
+  {q:"O que Jesus disse à samaritana sobre a verdadeira adoração?",
+   o:["Que deve ser em espírito e em verdade","Que o lugar certo era o Templo de Jerusalém",
+      "Que só os sacerdotes podiam adorar","Que bastava cantar bem"], c:0, t:30,
+   e:"Em espírito e em verdade (João 4.23-24). O importante não é o lugar, é como se adora."},
+  {q:"A adoração só acontece na igreja, no horário do culto?",
+   o:["Verdadeiro","Falso: não está limitada a tempo nem a lugar"], c:1, t:20,
+   e:"Falso. A verdadeira adoração nasce no coração, é diária e não está limitada a tempo nem a espaço."},
+  {q:"Complete: façamos tudo para a ______ de Deus (1 Coríntios 10.31)",
+   o:["Glória","Fama","Festa","Agenda"], c:0, t:20,
+   e:"Glória. Quer a tocar um instrumento, quer a louvar, tudo é para a glória de Deus."},
+  {q:"Segundo a lição, a verdadeira adoração é...",
+   o:["Um conjunto de ações que nasce no coração e é diária",
+      "Uma formalidade cerimonial","Só o momento dos cânticos","Uma obrigação de domingo"], c:0, t:20,
+   e:"Nasce no coração, é diária e é um conjunto de ações — não o cumprimento de uma formalidade."}
+ ]},
+ {n:3, nome:"Os músicos na igreja", cor:"var(--verde)", perguntas:[
+  {q:"Qual é o personagem do Antigo Testamento mais ligado à música?",
+   o:["Davi","Salomão","Elias","Jonas"], c:0, t:20,
+   e:"Davi. Tinha a música no coração desde criança e organizou o primeiro ministério de música da Bíblia."},
+  {q:"Quem Davi nomeou como um dos líderes dos músicos do Templo?",
+   o:["Asafe","Jubal","Silas","Samuel"], c:0, t:20,
+   e:"Asafe. Davi e Asafe tinham isto em comum: ambos eram músicos."},
+  {q:"Quem foi o primeiro a tocar harpa e lira, ainda antes do Dilúvio?",
+   o:["Jubal","Davi","Asafe","Noé"], c:0, t:20,
+   e:"Jubal, filho de Lameque (Génesis 4.21). Harpa e lira são os instrumentos mais antigos citados."},
+  {q:"A função do músico resume-se a tocar bem o instrumento?",
+   o:["Verdadeiro","Falso: conduz o povo à adoração e estuda a Palavra"], c:1, t:20,
+   e:"Falso. O músico conduz o povo à adoração e a sua função é tão sagrada quanto a de um pastor (Colossenses 3.23)."}
+ ]}
+];
+
+const FORMAS = [
+  '<svg viewBox="0 0 100 100"><polygon points="50,8 95,92 5,92"/></svg>',
+  '<svg viewBox="0 0 100 100"><polygon points="50,6 94,50 50,94 6,50"/></svg>',
+  '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42"/></svg>',
+  '<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="8"/></svg>'
+];
+const MAX = 1000, CHAVE = "licao6_progresso_v1";
+
+/* ---------------- memória do telemóvel ---------------- */
+function ler(){
+  try{ return JSON.parse(localStorage.getItem(CHAVE)) || {nome:"", etapas:{}}; }
+  catch(e){ return {nome:"", etapas:{}}; }
+}
+function gravar(p){ try{ localStorage.setItem(CHAVE, JSON.stringify(p)); }catch(e){} }
+let prog = ler();
+
+/* ---------------- estado da partida ---------------- */
+let etapa = null, idx = 0, pontosEtapa = 0, acertosEtapa = 0, serie = 0, relogio = null, restam = 0;
+
+const palco = document.getElementById("palco");
+const topo = document.getElementById("topo");
+const chipEtapa = document.getElementById("chipEtapa");
+const chipPontos = document.getElementById("chipPontos");
+const crono = document.getElementById("cronometro");
+const barra = document.getElementById("barra");
+const seg = document.getElementById("segundos");
+
+function mostrarTopo(v){ topo.style.visibility = v ? "visible" : "hidden"; }
+function pararRelogio(){ if (relogio){ clearInterval(relogio); relogio = null; } }
+const feitas = () => Object.keys(prog.etapas).length;
+const somaAcertos = () => Object.values(prog.etapas).reduce((s,e) => s + e.a, 0);
+const somaPontos = () => Object.values(prog.etapas).reduce((s,e) => s + e.p, 0);
+
+function etapaDoEndereco(){
+  const h = (location.hash || "").replace(/[^0-9]/g, "");
+  const n = parseInt(h, 10);
+  return (n >= 1 && n <= 3) ? n : null;
+}
+
+/* ---------------- ecrãs ---------------- */
+function inicio(){
+  pararRelogio(); mostrarTopo(false);
+  const alvo = etapaDoEndereco();
+  const temNome = !!prog.nome;
+
+  palco.innerHTML = `<div class="centro">
+    <h2>Lição 6 · O papel do talento musical</h2>
+    <p>Três etapas, quatro perguntas cada. O teu telemóvel guarda a pontuação e no fim soma tudo.</p>
+    ${temNome ? `<p>Estás a jogar como <b>${prog.nome}</b>. <button class="link" id="trocar">não sou eu</button></p>`
+              : `<input type="text" id="nome" placeholder="Escreve o teu nome" maxlength="24" autocomplete="off">`}
+    <div class="etapas">
+      ${ETAPAS.map(et => {
+        const r = prog.etapas[et.n];
+        return `<div class="etapa ${r ? "feita" : ""}" data-e="${et.n}">
+          <b>${et.n}</b><small>${r ? r.a + "/4 certas" : et.nome}</small></div>`;
+      }).join("")}
+    </div>
+    <p style="opacity:.65;font-size:.9rem">${alvo ? "Etapa " + alvo + " pronta a começar." : "Lê o QR da etapa ou toca no número."}</p>
+    ${feitas() === 3 ? `<button class="nav" id="verfinal">Ver o meu resultado final</button>` : ""}
+    <div><button class="link" id="prof">Sou o professor</button></div>
+  </div>`;
+
+  const campo = document.getElementById("nome");
+  const pegarNome = () => {
+    if (campo){ prog.nome = campo.value.trim() || "Sem nome"; gravar(prog); }
+    return !!prog.nome;
+  };
+  palco.querySelectorAll(".etapa").forEach(d => d.onclick = () => {
+    const n = Number(d.dataset.e);
+    if (!pegarNome() && !prog.nome){ campo && campo.focus(); return; }
+    if (prog.etapas[n] && !confirm("Já fizeste a etapa " + n + ". Queres repetir? A pontuação anterior é substituída.")) return;
+    comecar(n);
+  });
+  const tr = document.getElementById("trocar");
+  if (tr) tr.onclick = () => { prog = {nome:"", etapas:{}}; gravar(prog); inicio(); };
+  const vf = document.getElementById("verfinal");
+  if (vf) vf.onclick = final;
+  document.getElementById("prof").onclick = professor;
+
+  if (alvo && prog.nome && !prog.etapas[alvo]) comecar(alvo);
+}
+
+function comecar(n){
+  etapa = ETAPAS[n-1]; idx = 0; pontosEtapa = 0; acertosEtapa = 0; serie = 0;
+  pergunta();
+}
+
+function pergunta(){
+  const p = etapa.perguntas[idx];
+  mostrarTopo(true);
+  chipEtapa.textContent = `Etapa ${etapa.n} · ${idx+1}/${etapa.perguntas.length}`;
+  chipPontos.textContent = `${pontosEtapa} pts`;
+  crono.classList.remove("aperto");
+  barra.style.transition = "none"; barra.style.width = "100%";
+
+  palco.innerHTML = `
+    <div class="quadro"><div class="pergunta">${p.q}</div></div>
+    <div class="grelha">
+      ${p.o.map((o,k) => `<button class="op c${k}" data-k="${k}">
+        <span class="forma">${FORMAS[k]}</span><span>${o}</span></button>`).join("")}
+    </div>`;
+  palco.querySelectorAll(".op").forEach(b => b.onclick = () => responder(Number(b.dataset.k)));
+
+  restam = p.t; seg.textContent = restam;
+  requestAnimationFrame(() => { barra.style.transition = `width ${p.t}s linear`; barra.style.width = "0%"; });
+  relogio = setInterval(() => {
+    restam--; seg.textContent = Math.max(restam,0);
+    if (restam <= 5) crono.classList.add("aperto");
+    if (restam <= 0){ pararRelogio(); responder(null); }
+  }, 1000);
+}
+
+function responder(escolha){
+  pararRelogio();
+  const p = etapa.perguntas[idx];
+  const certo = escolha === p.c;
+  let ganhos = 0;
+  if (certo){
+    ganhos = Math.round((MAX/2) * (1 + Math.max(restam,0)/p.t));
+    serie++; if (serie > 1) ganhos += (serie-1) * 50;
+    pontosEtapa += ganhos; acertosEtapa++;
+  } else serie = 0;
+  chipPontos.textContent = `${pontosEtapa} pts`;
+  barra.style.transition = "none";
+
+  palco.querySelectorAll(".op").forEach(b => {
+    b.disabled = true;
+    if (Number(b.dataset.k) === p.c) b.classList.add("vencedora"); else b.classList.add("apagada");
+  });
+
+  const bloco = document.createElement("div");
+  bloco.className = "resultado";
+  bloco.innerHTML = `
+    <div class="veredito ${certo ? "ok" : "falhou"}">${escolha === null ? "Tempo esgotado!" : certo ? "Certíssimo!" : "Não foi dessa vez."}</div>
+    ${certo ? `<div class="ganhou">+${ganhos} pts${serie > 1 ? ` · sequência de ${serie}` : ""}</div>` : ""}
+    <p>${p.e}</p>
+    <div class="botoes"><button class="nav" id="seguir">${idx === etapa.perguntas.length-1 ? "Terminar etapa" : "Próxima →"}</button></div>`;
+  palco.appendChild(bloco);
+  const b = document.getElementById("seguir");
+  b.onclick = () => { if (idx === etapa.perguntas.length-1) fimEtapa(); else { idx++; pergunta(); } };
+  b.focus();
+}
+
+function fimEtapa(){
+  mostrarTopo(false);
+  prog.etapas[etapa.n] = {a:acertosEtapa, p:pontosEtapa};
+  gravar(prog);
+  const quantas = feitas();
+  palco.innerHTML = `<div class="centro">
+    <h2>Etapa ${etapa.n} concluída</h2>
+    <div class="pontuacao">${acertosEtapa}<span style="font-size:.35em">/4</span></div>
+    <div class="medalha">${pontosEtapa} pontos nesta etapa</div>
+    <p>Somando tudo até agora: <b>${somaAcertos()} de ${quantas*4}</b> certas · ${somaPontos()} pontos.</p>
+    ${quantas === 3
+      ? `<p>Fizeste as três etapas!</p><div class="botoes"><button class="nav" id="ir">Ver o resultado final</button></div>`
+      : `<p>Lê agora o QR da próxima etapa.</p><div class="botoes"><button class="nav claro" id="ir">Voltar ao início</button></div>`}
+  </div>`;
+  document.getElementById("ir").onclick = feitas() === 3 ? final : inicio;
+}
+
+function codigo(){
+  const a = [1,2,3].map(n => prog.etapas[n] ? prog.etapas[n].a : 0).join("-");
+  return `L6|${prog.nome}|${a}|${somaPontos()}`;
+}
+
+function final(){
+  mostrarTopo(false);
+  const tot = somaAcertos(), pts = somaPontos();
+  let medalha = "Bora reler a lição";
+  if (tot === 12) medalha = "Gabaritou!";
+  else if (tot >= 10) medalha = "Time titular";
+  else if (tot >= 8) medalha = "Muito bem";
+  else if (tot >= 6) medalha = "Dá para melhorar";
+  const cod = codigo();
+  const msg = `Lição 6 — ${prog.nome}: ${tot}/12 certas, ${pts} pontos. Código: ${cod}`;
+
+  palco.innerHTML = `<div class="centro">
+    <h2>${prog.nome}</h2>
+    <div class="pontuacao">${tot}<span style="font-size:.35em">/12</span></div>
+    <div class="medalha">${medalha}</div>
+    <p>${pts} pontos no total · etapa 1: ${(prog.etapas[1]||{a:0}).a}/4 · etapa 2: ${(prog.etapas[2]||{a:0}).a}/4 · etapa 3: ${(prog.etapas[3]||{a:0}).a}/4</p>
+    <p style="margin-top:14px">Envia este código à professora:</p>
+    <div class="codigo">${cod}</div>
+    <div class="botoes">
+      <button class="nav" id="partilhar">Enviar à professora</button>
+      <button class="nav claro" id="copiar">Copiar código</button>
+    </div>
+    <div><button class="link" id="recomecar">Apagar e começar do zero</button></div>
+  </div>`;
+
+  document.getElementById("partilhar").onclick = async () => {
+    if (navigator.share){ try{ await navigator.share({text:msg}); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(msg); alert("Copiado! Cola numa mensagem para a professora."); }
+    catch(e){ prompt("Copia e envia:", msg); }
+  };
+  document.getElementById("copiar").onclick = async () => {
+    try{ await navigator.clipboard.writeText(cod); alert("Código copiado."); }
+    catch(e){ prompt("Copia o código:", cod); }
+  };
+  document.getElementById("recomecar").onclick = () => {
+    if (confirm("Apagar a tua pontuação das três etapas?")){ prog = {nome:"", etapas:{}}; gravar(prog); inicio(); }
+  };
+}
+
+/* ---------------- painel do professor ---------------- */
+function professor(){
+  pararRelogio(); mostrarTopo(false);
+  palco.innerHTML = `<div class="centro" style="text-align:left">
+    <h2 style="text-align:center">Painel do professor</h2>
+    <p style="text-align:center">Cola aqui os códigos que os alunos enviaram (um por linha) e a soma aparece ordenada.</p>
+    <textarea id="colar" placeholder="L6|Maria|4-3-2|6120&#10;L6|João|3-4-4|7340"></textarea>
+    <div class="botoes"><button class="nav" id="somar">Somar</button>
+      <button class="nav claro" id="voltar">Voltar</button></div>
+    <div id="tabela"></div>
+  </div>`;
+  document.getElementById("voltar").onclick = inicio;
+  document.getElementById("somar").onclick = () => {
+    const linhas = document.getElementById("colar").value.split(/\n+/);
+    const alunos = [];
+    linhas.forEach(l => {
+      const m = l.match(/L6\s*\|\s*([^|]+?)\s*\|\s*(\d)\s*-\s*(\d)\s*-\s*(\d)\s*\|\s*(\d+)/i);
+      if (m) alunos.push({nome:m[1], e:[+m[2],+m[3],+m[4]], tot:(+m[2])+(+m[3])+(+m[4]), pts:+m[5]});
+    });
+    alunos.sort((a,b) => b.tot - a.tot || b.pts - a.pts);
+    const alvo = document.getElementById("tabela");
+    if (!alunos.length){ alvo.innerHTML = `<p style="margin-top:14px">Nenhum código reconhecido. Cada linha deve ter o formato <b>L6|Nome|4-3-2|6120</b>.</p>`; return; }
+    const media = Math.round(alunos.reduce((s,a) => s + a.tot, 0) / alunos.length * 10) / 10;
+    alvo.innerHTML = `<table>
+      <thead><tr><th>#</th><th>Aluno</th><th class="n">E1</th><th class="n">E2</th><th class="n">E3</th><th class="n">Total</th><th class="n">Pontos</th></tr></thead>
+      <tbody>${alunos.map((a,i) => `<tr><td>${i+1}</td><td>${a.nome}</td>
+        <td class="n">${a.e[0]}</td><td class="n">${a.e[1]}</td><td class="n">${a.e[2]}</td>
+        <td class="n">${a.tot}/12</td><td class="n">${a.pts}</td></tr>`).join("")}</tbody></table>
+      <div class="media">${alunos.length} ${alunos.length === 1 ? "aluno" : "alunos"} · média de ${media} respostas certas em 12</div>`;
+  };
+}
+
+window.addEventListener("hashchange", () => { pararRelogio(); inicio(); });
+document.addEventListener("keydown", e => {
+  if (["1","2","3","4"].includes(e.key)){
+    const b = palco.querySelector(`.op[data-k="${Number(e.key)-1}"]:not(:disabled)`);
+    if (b) b.click();
+  }
+});
+
+inicio();
+</script>
+</body>
+</html>
