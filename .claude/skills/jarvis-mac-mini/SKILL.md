@@ -9,6 +9,7 @@ Tudo o que é do Jarvis corre e é guardado **no Mac mini** (servidor sempre lig
 
 - Código e instruções: `jarvis-mac-mini/` neste repositório (ler o `README.md` antes de agir).
 - No Mac mini: `~/Central-IA/jarvis` (programa), `~/Central-IA/jarvis.conf` (configuração), `~/Central-IA/bin/` (scripts), serviço launchd `pt.centralia.jarvis`, registo em `~/Library/Logs/CentralIA/jarvis.log`.
+- Acesso pelo iPhone/PCs: `~/Central-IA/bin/jarvis-iphone.sh` (tailscale serve, só dentro da rede Tailscale; HTTPS 443 → interface, 8443 → bridge). Nunca usar `tailscale funnel`.
 - Habilidades ativas: `~/Vaults/Cerebro Escritorio Ale/Central IA/Jarvis - Habilidades/*.md` (lidas a cada ligação; não é preciso reiniciar).
 
 ## Evoluir uma habilidade

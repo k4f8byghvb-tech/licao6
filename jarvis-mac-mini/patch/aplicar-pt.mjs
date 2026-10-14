@@ -93,7 +93,23 @@ const SYSTEM_PROMPT = \`You are JARVIS.`,
     `all.find((v) => /^pt/i.test(v.lang)) ?? null // ${MARCA}`,
   ],
   ['src/lib/tts.ts', "u.lang = voice?.lang ?? 'en-GB'", `u.lang = voice?.lang ?? 'pt-PT' // ${MARCA}`],
+  // 5. iPhone pelo Tailscale: aberta em https://mac-mini.<tailnet>.ts.net, a
+  //    interface fala com o bridge na porta 8443 do mesmo nome (tailscale serve).
+  //    No Mac mini (http://localhost:5173) continua a usar ws://localhost:8787.
+  [
+    'src/config.ts',
+    "export const BRIDGE_WS_URL = str(import.meta.env.VITE_BRIDGE_URL) ?? 'ws://localhost:8787'",
+    `export const BRIDGE_WS_URL =
+  str(import.meta.env.VITE_BRIDGE_URL) ??
+  (typeof location !== 'undefined' && location.protocol === 'https:'
+    ? \`wss://\${location.hostname}:8443\`
+    : 'ws://localhost:8787') // ${MARCA}`,
+  ],
 ]
+
+/** 5. CSP: imagens, som e páginas servidas pelo bridge também via Tailscale. */
+const CSP_DE = 'http://localhost:8787 http://127.0.0.1:8787;'
+const CSP_PARA = 'http://localhost:8787 http://127.0.0.1:8787 https://*.ts.net:8443;'
 
 /** 4. Frases de espera: inglês -> português de Portugal, sem "sir". */
 const FRASES = {
@@ -176,6 +192,16 @@ for (const [en, pt] of Object.entries(FRASES)) {
   }
 }
 ficheiros.set('src/lib/fillers.ts', fill)
+
+const html = ler('index.html')
+if (html.includes(CSP_PARA)) {
+  saltadas++
+} else if (html.includes(CSP_DE)) {
+  ficheiros.set('index.html', html.split(CSP_DE).join(CSP_PARA))
+  aplicadas++
+} else {
+  falhas.push('index.html: política CSP não encontrada')
+}
 
 if (falhas.length) {
   console.error('O Jarvis mudou e o patch já não encaixa. Nada foi gravado.')

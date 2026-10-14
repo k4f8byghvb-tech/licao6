@@ -76,6 +76,18 @@ As habilidades são ficheiros `.md` em:
 | `05-producao-de-texto.md` | Emails, cartas, avisos, cobranças — sempre no ecrã, nunca enviados sozinho |
 | `06-produtividade.md` | "Como está o meu dia?", agenda da semana, emails com prazos |
 
+## Passo 5 · Usar no iPhone (pelo Tailscale)
+
+O iPhone é só o microfone e o ecrã: **todo o processamento continua no Mac mini**. A ligação passa só pela sua rede Tailscale (`tailscale serve`, nunca `funnel`), por isso não fica aberta à internet.
+
+1. No Mac mini, depois do Passo 1: `bash ~/Central-IA/bin/jarvis-iphone.sh`
+   - Se disser que falta HTTPS: em https://login.tailscale.com/admin/dns ligue **HTTPS Certificates** e volte a correr o script.
+   - Se a porta 443 já servir outra app, o script para sem mudar nada.
+2. No iPhone, com a app Tailscale ligada, abra no **Safari** o endereço que o script mostrou (`https://mac-mini.<…>.ts.net`).
+3. **Partilhar → Adicionar ao ecrã principal**, depois **INITIALISE** e permita o microfone.
+
+No iPhone recomenda-se a chave da ElevenLabs (Passo 2): o reconhecimento de voz do Safari é menos fiável. Com o ecrã bloqueado o Jarvis deixa de ouvir.
+
 ## Manutenção
 
 | Situação | Comando no Terminal do Mac mini |
@@ -84,6 +96,7 @@ As habilidades são ficheiros `.md` em:
 | Reiniciar | `bash ~/Central-IA/bin/jarvis-reiniciar.sh` |
 | Ver o registo | `tail -f ~/Library/Logs/CentralIA/jarvis.log` |
 | Atualizar (depois de `git -C ~/licao6 pull`) | `bash ~/licao6/jarvis-mac-mini/instalar.sh` |
+| Desligar o acesso pelo iPhone | `/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --https=443 off` e o mesmo com `--https=8443` |
 | Desligar o arranque automático | `launchctl bootout gui/$(id -u)/pt.centralia.jarvis` |
 
 **Depois de um reinício do Mac mini** o serviço arranca sozinho; falta só abrir http://localhost:5173 no Chrome e carregar em **INITIALISE** (o Chrome exige um clique antes de ligar o microfone).
@@ -92,5 +105,5 @@ As habilidades são ficheiros `.md` em:
 
 ## O que ainda não está feito
 
-- Usar o Jarvis no iPhone pelo Tailscale (precisa de HTTPS e de ajustar a ligação do bridge) — próxima fase.
-- Testado: o patch pt-PT compila e as habilidades carregam. Não testado aqui: o launchd e o microfone no Mac mini — confirmar com `jarvis-saude.sh` na primeira instalação.
+- Testado: o patch pt-PT compila (também com o acesso Tailscale) e as habilidades carregam.
+- Não testado aqui: o launchd, o microfone no Mac mini e o acesso pelo iPhone — confirmar com `jarvis-saude.sh` na primeira instalação.

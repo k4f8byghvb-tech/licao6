@@ -23,5 +23,9 @@ if security find-generic-password -s central-ia-elevenlabs >/dev/null 2>&1; then
 n=$(ls "$HAB"/*.md 2>/dev/null | wc -l | tr -d ' ')
 [ "$n" -gt 0 ] && ok "$n habilidades em: $HAB" || er "nenhuma habilidade em: $HAB"
 [ "${JARVIS_ALLOW_WRITES:-0}" = "1" ] && av "modo de ESCRITA ligado" || ok "modo só de leitura"
+if [ -n "${JARVIS_ALLOWED_ORIGINS:-}" ]; then
+  code=$(curl -s -o /dev/null -w '%{http_code}' "$JARVIS_ALLOWED_ORIGINS" || true)
+  [ "$code" = "200" ] && ok "iPhone/Tailscale: $JARVIS_ALLOWED_ORIGINS" || er "iPhone/Tailscale: $JARVIS_ALLOWED_ORIGINS não responde (HTTP $code)"
+fi
 echo "--- últimas linhas do registo ---"
 tail -n 8 "$HOME/Library/Logs/CentralIA/jarvis.log" 2>/dev/null || echo "(sem registo)"
