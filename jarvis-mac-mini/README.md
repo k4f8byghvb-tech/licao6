@@ -97,7 +97,7 @@ No iPhone recomenda-se a chave da ElevenLabs (Passo 2): o reconhecimento de voz 
 | Ver o registo | `tail -f ~/Library/Logs/CentralIA/jarvis.log` |
 | Atualizar (depois de `git -C ~/licao6 pull`) | `bash ~/licao6/jarvis-mac-mini/instalar.sh` |
 | Desligar o acesso pelo iPhone | `/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --https=443 off` e o mesmo com `--https=8443` |
-| Comandar o Mac mini pelo iPhone (Claude) | `bash ~/licao6/jarvis-mac-mini/bin/claude-remoto.sh` — ver a skill `iphone-mac-mini` |
+| Comandar o Mac mini à distância (iPhone, portáteis) | `bash ~/licao6/jarvis-mac-mini/bin/claude-remoto.sh` — ver a skill `acesso-remoto-mac-mini` |
 | Desligar o arranque automático | `launchctl bootout gui/$(id -u)/pt.centralia.jarvis` |
 
 **Depois de um reinício do Mac mini** o serviço arranca sozinho; falta só abrir http://localhost:5173 no Chrome e carregar em **INITIALISE** (o Chrome exige um clique antes de ligar o microfone).

@@ -41,6 +41,7 @@ echo "--- registo ---"; tail -n 15 "$HOME/Library/Logs/CentralIA/claude-remoto.l
 cat <<FIM
 
 Se o registo mostrar um link ou pedir para iniciar sessão, faça-o (é a sua conta).
-Depois, no iPhone: app Claude → Code → a sessão "licao6" do Mac mini aparece na lista.
+Depois, no iPhone (app Claude → Code) ou nos portáteis (app Claude → Code, ou claude.ai/code),
+a sessão "licao6" do Mac mini aparece na lista.
 Parar:  launchctl bootout gui/\$(id -u)/pt.centralia.claude-remoto
 FIM
